@@ -8,6 +8,10 @@ contract Base is Claimable{
     using SafeMath for uint256;
 
     ERC20 erc20Token;
+    uint256 mortageRate = 1;
+    // 15% / 12 month = 0.0125
+    //uint256 interestRatePerMonth = 0.0125;
+    uint256 USDTDecimals = 1e6;
 
     mapping(address => uint256) public etherBalance;
     mapping(address => uint256) public borrowEther;
@@ -35,7 +39,8 @@ contract Base is Claimable{
         return etherBalance[_add].sub(lockedEther[_add]);
     }
 
-    function gettokenBalance(address _add, ERC20 _Token) public view returns (uint256) {
-        return tokenBalance[_add][_Token];
+    //function gettokenBalance(address _add, ERC20 _Token) public view returns (uint256) {
+    function gettokenBalance(address _add) public view returns (uint256) {
+        return tokenBalance[_add][erc20Token];
     }
 }

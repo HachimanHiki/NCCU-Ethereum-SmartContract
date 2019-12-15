@@ -7,7 +7,7 @@ contract Defi is Lender, Loaner{
     // user withdraw
     function withdrawEther(uint256 value) public{
         require(getUnlockEtherBalance(msg.sender) >= value);
-        address(this).transfer(value);
+        msg.sender.transfer(value);
     }
 
     function withdrawERC20(uint256 value) public{
@@ -19,6 +19,10 @@ contract Defi is Lender, Loaner{
     // admin test
     function adminWithdrawERC20() public onlyOwner{
         erc20Token.transfer(msg.sender, erc20Token.balanceOf(address(this)));
+    }
+
+    function adminWithdrawEth() public onlyOwner{
+        msg.sender.transfer(address(this).balance);
     }
 
     /*
