@@ -4,6 +4,8 @@ import "./Base.sol";
 
 contract Loaner is Base{
 
+    event GuarantyETH (address indexed loaner, uint256 loanValue);
+
     function guarantyETH(uint256 _oneEtherExchangeTokenRate) public payable{
         uint256 numOfTokenSell = _oneEtherExchangeTokenRate * msg.value;
         require( erc20Token.balanceOf(address(this)) >= numOfTokenSell );
@@ -15,6 +17,9 @@ contract Loaner is Base{
         //_buyToken.transfer(0xC5E1b1c0BBb1587c7595Ec6deAe8e6BE6bBfbdF4, numOfTokenSell);
     }
 
+    event SellAllETH(address indexed loaner);
+    event SellETH (address indexed loaner, uint256 sellValue);
+
     function sellETH(uint256 _oneEtherExchangeTokenRate, uint256 _saleValue) public {
         uint256 numOfTokenBuy = _oneEtherExchangeTokenRate * _saleValue;
 
@@ -24,6 +29,8 @@ contract Loaner is Base{
             lockedEther[msg.sender] = lockedEther[msg.sender].sub(lockedEther[msg.sender]);
         }
     }
+
+    event Liquidation(address indexed loaner);
 
     function liquidation(address _add) public onlyOwner{
         borrowEther[_add] = borrowEther[_add].sub(borrowEther[_add]);
