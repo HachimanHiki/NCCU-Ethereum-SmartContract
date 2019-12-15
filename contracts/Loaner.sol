@@ -14,6 +14,7 @@ contract Loaner is Base{
         lockedEther[msg.sender] = lockedEther[msg.sender].add(msg.value);
         borrowEther[msg.sender] = borrowEther[msg.sender].add(msg.value);
 
+        emit GuarantyETH(msg.sender, msg.value);
         //_buyToken.transfer(0xC5E1b1c0BBb1587c7595Ec6deAe8e6BE6bBfbdF4, numOfTokenSell);
     }
 
@@ -38,12 +39,16 @@ contract Loaner is Base{
         borrowEther[msg.sender] = borrowEther[msg.sender].sub(_saleValue);
         if (borrowEther[msg.sender] == 0){
             lockedEther[msg.sender] = lockedEther[msg.sender].sub(lockedEther[msg.sender]);
+            emit SellAllETH(msg.sender);
         }
+
+        emit SellETH(msg.sender, _saleValue);
     }
 
     event Liquidation(address indexed loaner);
 
     function liquidation(address _add) public onlyOwner{
         borrowEther[_add] = borrowEther[_add].sub(borrowEther[_add]);
+        emit Liquidation(_add);
     }
 }
