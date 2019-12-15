@@ -4,6 +4,9 @@ import "./Loaner.sol";
 import "./Lender.sol";
 
 contract Defi is Lender, Loaner{
+
+    constructor() public Base(0xBF20b11C657220fBea7082EbdF19D74fAb7E3DAA){}
+
     // user withdraw
     function withdrawEther(uint256 value) public{
         require(getUnlockEtherBalance(msg.sender) >= value);

@@ -8,10 +8,15 @@ contract Base is Claimable{
     using SafeMath for uint256;
 
     ERC20 erc20Token;
-    uint256 mortageRate = 1;
-    // 15% / 12 month = 0.0125
-    //uint256 interestRatePerMonth = 0.0125;
+    // 10% / 365 ~= 2.734*1e4 ~= 2734*1e7
+    uint256 interestRatePerDay = 2734;
+    uint256 interestRatePerDayDecimals = 1e7;
     uint256 USDTDecimals = 1e6;
+
+    struct borrowInfomation{
+        uint256 initBorrowTime;
+        uint256 initBorrowRate;
+    }
 
     mapping(address => uint256) public etherBalance;
     mapping(address => uint256) public borrowEther;
@@ -27,8 +32,16 @@ contract Base is Claimable{
         return etherBalance[_add];
     }
 
-    function getborrowEther(address _add) public view returns (uint256) {
+    function getBorrowEther(address _add) public view returns (uint256) {
         return borrowEther[_add];
+    }
+
+    function getInitBorrowTime(address _add) public view returns (uint256) {
+        return borrowInfo[_add].initBorrowTime;
+    }
+
+    function getInitBorrowRate(address _add) public view returns (uint256) {
+        return borrowInfo[_add].initBorrowRate;
     }
 
     function getLockedEtherBalance(address _add) public view returns (uint256) {
@@ -39,8 +52,8 @@ contract Base is Claimable{
         return etherBalance[_add].sub(lockedEther[_add]);
     }
 
-    //function gettokenBalance(address _add, ERC20 _Token) public view returns (uint256) {
-    function gettokenBalance(address _add) public view returns (uint256) {
+    //function getTokenBalance(address _add, ERC20 _Token) public view returns (uint256) {
+    function getTokenBalance(address _add) public view returns (uint256) {
         return tokenBalance[_add][erc20Token];
     }
 }

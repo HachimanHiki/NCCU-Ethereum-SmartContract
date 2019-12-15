@@ -13,6 +13,8 @@ contract Loaner is Base{
         etherBalance[msg.sender] = etherBalance[msg.sender].add(msg.value);
         lockedEther[msg.sender] = lockedEther[msg.sender].add(msg.value);
         borrowEther[msg.sender] = borrowEther[msg.sender].add(msg.value);
+        borrowInfo[msg.sender].initBorrowTime = now;
+        borrowInfo[msg.sender].initBorrowRate = _oneEtherExchangeTokenRate;
 
         emit GuarantyETH(msg.sender, msg.value);
         //_buyToken.transfer(0xC5E1b1c0BBb1587c7595Ec6deAe8e6BE6bBfbdF4, numOfTokenSell);
@@ -25,6 +27,8 @@ contract Loaner is Base{
         require( getUnlockEtherBalance(msg.sender) >= _guarantyValue);
         lockedEther[msg.sender] = lockedEther[msg.sender].add(_guarantyValue);
         borrowEther[msg.sender] = borrowEther[msg.sender].add(_guarantyValue);
+        borrowInfo[msg.sender].initBorrowTime = now;
+        borrowInfo[msg.sender].initBorrowRate = _oneEtherExchangeTokenRate;
 
         emit GuarantyETH(msg.sender, _guarantyValue);
     }
@@ -34,6 +38,9 @@ contract Loaner is Base{
 
     function sellETH(uint256 _oneEtherExchangeTokenRate, uint256 _saleValue) public {
         uint256 numOfTokenBuy = _oneEtherExchangeTokenRate * _saleValue;
+        uint256 interestPayPerDay = _saleValue.mul( borrowInfo[msg.sender].initBorrowRate).mul(interestRatePerDay).div(interestRatePerDayDecimals );
+        uint256 borrowPeriod = now.sub(borrowInfo[msg.sender].initBorrowTime).div(1 days);
+        numOfTokenBuy = numOfTokenBuy.sub( interestPayPerDay.mul(borrowPeriod) );
 
         tokenBalance[msg.sender][erc20Token] = tokenBalance[msg.sender][erc20Token].add(numOfTokenBuy);
         borrowEther[msg.sender] = borrowEther[msg.sender].sub(_saleValue);

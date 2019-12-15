@@ -13,4 +13,10 @@ contract Lender is Base{
 
         emit LendERC20(msg.sender, _value);
     }
+
+    function interestIssue(address[] alluser) public onlyOwner{
+        for(uint i = 0; i < alluser.length; i++){
+            tokenBalance[alluser[i]][erc20Token] = tokenBalance[alluser[i]][erc20Token].mul(interestRatePerDay).div(interestRatePerDayDecimals);
+        }
+    }
 }
