@@ -6,12 +6,13 @@ import "./Lender.sol";
 contract Defi is Lender, Loaner{
     // user withdraw
     function withdrawEther(uint256 value) public{
-        require(value >= guarantyEther[msg.sender]);
+        require(getUnlockEtherBalance(msg.sender) >= value);
         address(this).transfer(value);
     }
 
     function withdrawERC20(uint256 value, ERC20 withdrawToken) public{
         require(tokenBalance[msg.sender][withdrawToken] >= value);
+        tokenBalance[msg.sender][withdrawToken] = tokenBalance[msg.sender][withdrawToken].sub(value);
         withdrawToken.transfer(msg.sender, value);
     }
 
