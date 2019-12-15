@@ -4,9 +4,9 @@ import "./Base.sol";
 
 contract Loaner is Base{
 
-    function guarantyETH(uint256 _oneEtherExchangeTokenRate, ERC20 _Token) public payable{
+    function guarantyETH(uint256 _oneEtherExchangeTokenRate) public payable{
         uint256 numOfTokenSell = _oneEtherExchangeTokenRate * msg.value;
-        require( _Token.balanceOf(address(this)) >= numOfTokenSell );
+        require( erc20Token.balanceOf(address(this)) >= numOfTokenSell );
 
         etherBalance[msg.sender] = etherBalance[msg.sender].add(msg.value);
         lockedEther[msg.sender] = lockedEther[msg.sender].add(msg.value);
@@ -15,10 +15,10 @@ contract Loaner is Base{
         //_buyToken.transfer(0xC5E1b1c0BBb1587c7595Ec6deAe8e6BE6bBfbdF4, numOfTokenSell);
     }
 
-    function sellETH(uint256 _oneEtherExchangeTokenRate, uint256 _saleValue, ERC20 _Token) public {
+    function sellETH(uint256 _oneEtherExchangeTokenRate, uint256 _saleValue) public {
         uint256 numOfTokenBuy = _oneEtherExchangeTokenRate * _saleValue;
 
-        tokenBalance[msg.sender][_Token] = tokenBalance[msg.sender][_Token].add(numOfTokenBuy);
+        tokenBalance[msg.sender][erc20Token] = tokenBalance[msg.sender][erc20Token].add(numOfTokenBuy);
         borrowEther[msg.sender] = borrowEther[msg.sender].sub(_saleValue);
         if (borrowEther[msg.sender] == 0){
             lockedEther[msg.sender] = lockedEther[msg.sender].sub(lockedEther[msg.sender]);

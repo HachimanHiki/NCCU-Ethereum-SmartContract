@@ -6,10 +6,18 @@ import "./openzeppelin-solidity/math/SafeMath.sol";
 
 contract Base is Claimable{
     using SafeMath for uint256;
+
+    ERC20 erc20Token;
+
     mapping(address => uint256) public etherBalance;
     mapping(address => uint256) public borrowEther;
     mapping(address => uint256) public lockedEther;
     mapping(address => mapping(address => uint256)) public tokenBalance;
+
+    // now only support one ERC20 token
+    constructor(address _erc20TokenAddress) public{
+        erc20Token = ERC20(_erc20TokenAddress);
+    }
 
     function getEtherBalance(address _add) public view returns (uint256) {
         return etherBalance[_add];
