@@ -1,9 +1,9 @@
 pragma solidity 0.4.24;
 
-import "./Loaner.sol";
+import "./Borrower.sol";
 import "./Lender.sol";
 
-contract Defi is Lender, Loaner{
+contract Defi is Lender, Borrower{
 
     constructor() public Base(0xBF20b11C657220fBea7082EbdF19D74fAb7E3DAA){}
 

@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 import "./Base.sol";
 
-contract Loaner is Base{
+contract Borrower is Base{
 
     event GuarantyETH (address indexed loaner, uint256 loanValue);
 
