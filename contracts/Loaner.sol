@@ -6,7 +6,7 @@ contract Loaner is Base{
 
     event GuarantyETH (address indexed loaner, uint256 loanValue);
 
-    function guarantyETH(uint256 _oneEtherExchangeTokenRate) public payable{
+    function depositETHAndGuaranty(uint256 _oneEtherExchangeTokenRate) public payable{
         uint256 numOfTokenSell = _oneEtherExchangeTokenRate * msg.value;
         require( erc20Token.balanceOf(address(this)) >= numOfTokenSell );
 
