@@ -21,6 +21,7 @@ contract Base is Claimable{
     mapping(address => uint256) public etherBalance;
     mapping(address => uint256) public borrowEther;
     mapping(address => uint256) public lockedEther;
+    mapping(address => borrowInfomation) public borrowInfo;
     mapping(address => mapping(address => uint256)) public tokenBalance;
 
     // now only support one ERC20 token
