@@ -17,6 +17,7 @@ contract Borrower is Base{
     }
 
     function _guarantyETH(uint256 _oneEtherExchangeTokenRate, uint256 _guarantyValue) public{
+        require(getLockedEtherBalance(msg.sender)==0);
         uint256 numOfTokenSell = _oneEtherExchangeTokenRate * _guarantyValue;
         require( erc20Token.balanceOf(address(this)) >= numOfTokenSell );
 
@@ -39,8 +40,12 @@ contract Borrower is Base{
 
         tokenBalance[msg.sender][erc20Token] = tokenBalance[msg.sender][erc20Token].add(numOfTokenBuy);
         borrowEther[msg.sender] = borrowEther[msg.sender].sub(_saleValue);
+
         if (borrowEther[msg.sender] == 0){
             lockedEther[msg.sender] = lockedEther[msg.sender].sub(lockedEther[msg.sender]);
+            borrowInfo[msg.sender].initBorrowTime = 0;
+            borrowInfo[msg.sender].initBorrowRate = 0;
+
             emit SellAllETH(msg.sender);
         }
 
