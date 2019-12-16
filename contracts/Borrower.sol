@@ -47,7 +47,7 @@ contract Borrower is Base{
         emit SellETH(msg.sender, _saleValue);
     }
 
-    event Liquidation(address indexed loaner);
+    event Liquidation(address indexed borrower);
 
     function liquidation(address _add) public onlyOwner{
         borrowEther[_add] = borrowEther[_add].sub(borrowEther[_add]);
