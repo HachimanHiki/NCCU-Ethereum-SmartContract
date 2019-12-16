@@ -9,16 +9,11 @@ contract Borrower is Base{
     function depositETHAndGuaranty(uint256 _oneEtherExchangeTokenRate) public payable{
         _guarantyETH(_oneEtherExchangeTokenRate, msg.value);
         etherBalance[msg.sender] = etherBalance[msg.sender].add(msg.value);
-
-        emit GuarantyETH(msg.sender, msg.value);
-        //_buyToken.transfer(0xC5E1b1c0BBb1587c7595Ec6deAe8e6BE6bBfbdF4, numOfTokenSell);
     }
 
     function guarantyETH(uint256 _oneEtherExchangeTokenRate, uint256 _guarantyValue) public{
         require( getUnlockEtherBalance(msg.sender) >= _guarantyValue);
         _guarantyETH(_oneEtherExchangeTokenRate, _guarantyValue);
-
-        emit GuarantyETH(msg.sender, _guarantyValue);
     }
 
     function _guarantyETH(uint256 _oneEtherExchangeTokenRate, uint256 _guarantyValue) public{
