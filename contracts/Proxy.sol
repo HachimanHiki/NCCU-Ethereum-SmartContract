@@ -12,7 +12,7 @@ contract Proxy is Claimable{
         targetAddress = _address;
     }
 
-    function () public {
+    function () public payable{
         address contractAddr = targetAddress;
         assembly {
             let ptr := mload(0x40)
