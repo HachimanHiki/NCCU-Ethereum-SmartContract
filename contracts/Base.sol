@@ -11,16 +11,17 @@ contract Base is Claimable{
     // 10% / 365 ~= 2.734*1e4 ~= 2734*1e7
     uint256 interestRatePerDay = 2734;
     uint256 interestRatePerDayDecimals = 1e7;
-    uint256 USDTDecimals = 1e6;
+    //uint256 USDTDecimals = 1e6;
 
     struct borrowInfomation{
         uint256 initBorrowTime;
         uint256 initBorrowRate;
     }
 
-    mapping(address => uint256) public etherBalance;
+    //mapping(address => uint256) public etherBalance;
     mapping(address => uint256) public borrowEther;
-    mapping(address => uint256) public lockedEther;
+    //mapping(address => uint256) public lockedEther;
+    mapping(address => uint256) public lockedToken;
     mapping(address => borrowInfomation) public borrowInfo;
     mapping(address => mapping(address => uint256)) public tokenBalance;
 
@@ -28,11 +29,11 @@ contract Base is Claimable{
     constructor(address _erc20TokenAddress) public{
         erc20Token = ERC20(_erc20TokenAddress);
     }
-
+/*
     function getEtherBalance(address _add) public view returns (uint256) {
         return etherBalance[_add];
     }
-
+*/
     function getBorrowEther(address _add) public view returns (uint256) {
         return borrowEther[_add];
     }
@@ -45,6 +46,14 @@ contract Base is Claimable{
         return borrowInfo[_add].initBorrowRate;
     }
 
+    function getLockedTokenBalance(address _add) public view returns (uint256) {
+        return lockedToken[_add];
+    }
+
+    function getUnlockTokenBalance(address _add) public view returns (uint256) {
+        return tokenBalance[_add][erc20Token].sub(lockedToken[_add]);
+    }
+/*
     function getLockedEtherBalance(address _add) public view returns (uint256) {
         return lockedEther[_add];
     }
@@ -52,7 +61,7 @@ contract Base is Claimable{
     function getUnlockEtherBalance(address _add) public view returns (uint256) {
         return etherBalance[_add].sub(lockedEther[_add]);
     }
-
+*/
     //function getTokenBalance(address _add, ERC20 _Token) public view returns (uint256) {
     function getTokenBalance(address _add) public view returns (uint256) {
         return tokenBalance[_add][erc20Token];
