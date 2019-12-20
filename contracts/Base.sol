@@ -18,9 +18,7 @@ contract Base is Claimable{
         uint256 initBorrowRate;
     }
 
-    //mapping(address => uint256) public etherBalance;
     mapping(address => uint256) public borrowEther;
-    //mapping(address => uint256) public lockedEther;
     mapping(address => uint256) public lockedToken;
     mapping(address => borrowInfomation) public borrowInfo;
     mapping(address => mapping(address => uint256)) public tokenBalance;
@@ -29,11 +27,7 @@ contract Base is Claimable{
     constructor(address _erc20TokenAddress) public{
         erc20Token = ERC20(_erc20TokenAddress);
     }
-/*
-    function getEtherBalance(address _add) public view returns (uint256) {
-        return etherBalance[_add];
-    }
-*/
+
     function getBorrowEther(address _add) public view returns (uint256) {
         return borrowEther[_add];
     }
@@ -53,15 +47,7 @@ contract Base is Claimable{
     function getUnlockTokenBalance(address _add) public view returns (uint256) {
         return tokenBalance[_add][erc20Token].sub(lockedToken[_add]);
     }
-/*
-    function getLockedEtherBalance(address _add) public view returns (uint256) {
-        return lockedEther[_add];
-    }
 
-    function getUnlockEtherBalance(address _add) public view returns (uint256) {
-        return etherBalance[_add].sub(lockedEther[_add]);
-    }
-*/
     //function getTokenBalance(address _add, ERC20 _Token) public view returns (uint256) {
     function getTokenBalance(address _add) public view returns (uint256) {
         return tokenBalance[_add][erc20Token];

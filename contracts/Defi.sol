@@ -8,12 +8,6 @@ contract Defi is Lender, Borrower{
     constructor() public Base(0xBF20b11C657220fBea7082EbdF19D74fAb7E3DAA){}
 
     // user withdraw
-    /*
-    function withdrawEther(uint256 value) public{
-        require(getUnlockEtherBalance(msg.sender) >= value);
-        msg.sender.transfer(value);
-    }
-    */
 
     function withdrawERC20(uint256 value) public{
         require(getUnlockTokenBalance(msg.sender) >= value);
@@ -30,9 +24,4 @@ contract Defi is Lender, Borrower{
         msg.sender.transfer(address(this).balance);
     }
 
-    /*
-    function adminWithdrawERC20(ERC20 withdrawToken) public onlyOwner{
-        withdrawToken.transfer(msg.sender, withdrawToken.balanceOf(address(this)));
-    }
-    */
 }

@@ -4,7 +4,6 @@ import "./Base.sol";
 
 contract Borrower is Base{
 
-    //event GuarantyETH (address indexed borrower, uint256 borrowValue);
     event GuarantyToken (address indexed borrower, uint256 borrowValue);
 
     function depositETHAndGuaranty(uint256 _oneEtherExchangeTokenRate, uint256 _value) public{
@@ -12,7 +11,6 @@ contract Borrower is Base{
         erc20Token.transferFrom(msg.sender, address(this), _value);
         _guarantyETH(_oneEtherExchangeTokenRate, _value);
         tokenBalance[msg.sender][erc20Token] = tokenBalance[msg.sender][erc20Token].add(_value);
-        //etherBalance[msg.sender] = etherBalance[msg.sender].add(_value);
     }
 
     function guarantyETH(uint256 _oneEtherExchangeTokenRate, uint256 _guarantyValue) public{
@@ -67,56 +65,7 @@ contract Borrower is Base{
 
         emit SellETH(msg.sender, _saleValue);
     }
-/*
-    function depositETHAndGuaranty(uint256 _oneEtherExchangeTokenRate) public payable{
-        _guarantyETH(_oneEtherExchangeTokenRate, msg.value);
-        etherBalance[msg.sender] = etherBalance[msg.sender].add(msg.value);
-    }
 
-    function guarantyETH(uint256 _oneEtherExchangeTokenRate, uint256 _guarantyValue) public{
-        require( getUnlockEtherBalance(msg.sender) >= _guarantyValue);
-        _guarantyETH(_oneEtherExchangeTokenRate, _guarantyValue);
-    }
-
-    function _guarantyETH(uint256 _oneEtherExchangeTokenRate, uint256 _guarantyValue) private{
-        require(getLockedEtherBalance(msg.sender)==0);
-        uint256 numOfTokenSell = _oneEtherExchangeTokenRate.mul(_guarantyValue);
-        require( erc20Token.balanceOf(address(this)) >= numOfTokenSell );
-
-        lockedEther[msg.sender] = lockedEther[msg.sender].add(_guarantyValue);
-        borrowEther[msg.sender] = borrowEther[msg.sender].add(_guarantyValue);
-        borrowInfo[msg.sender].initBorrowTime = now;
-        borrowInfo[msg.sender].initBorrowRate = _oneEtherExchangeTokenRate;
-
-        emit GuarantyETH(msg.sender, _guarantyValue);
-    }
-
-    event SellAllETH(address indexed borrower);
-    event SellETH (address indexed borrower, uint256 sellValue);
-
-    function sellETH(uint256 _oneEtherExchangeTokenRate, uint256 _saleValue) public {
-        uint256 numOfTokenBuy = _oneEtherExchangeTokenRate * _saleValue;
-        uint256 interestPayPerDay = _saleValue.mul(borrowInfo[msg.sender].initBorrowRate)
-        .mul(interestRatePerDay).div(interestRatePerDayDecimals );
-
-        uint256 borrowPeriod = now.sub(borrowInfo[msg.sender].initBorrowTime).div(1 days);
-        numOfTokenBuy = numOfTokenBuy.sub(interestPayPerDay.mul(borrowPeriod));
-
-        tokenBalance[msg.sender][erc20Token] = tokenBalance[msg.sender][erc20Token].add(numOfTokenBuy);
-        // borrow 100 token and win 105 , must return 100
-        borrowEther[msg.sender] = borrowEther[msg.sender].sub(_saleValue);
-
-        if (borrowEther[msg.sender] == 0){
-            lockedEther[msg.sender] = lockedEther[msg.sender].sub(lockedEther[msg.sender]);
-            borrowInfo[msg.sender].initBorrowTime = 0;
-            borrowInfo[msg.sender].initBorrowRate = 0;
-
-            emit SellAllETH(msg.sender);
-        }
-
-        emit SellETH(msg.sender, _saleValue);
-    }
-*/
     event Liquidation(address indexed borrower);
 
     function liquidation(address _add) public onlyOwner{
