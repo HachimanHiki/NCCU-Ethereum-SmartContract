@@ -18,10 +18,10 @@ contract Base is Claimable{
         uint256 initBorrowRate;
     }
 
-    mapping(address => uint256) public borrowEther;
-    mapping(address => uint256) public lockedToken;
-    mapping(address => borrowInfomation) public borrowInfo;
-    mapping(address => mapping(address => uint256)) public tokenBalance;
+    mapping(address => uint256) private borrowEther;
+    mapping(address => uint256) private lockedToken;
+    mapping(address => borrowInfomation) private borrowInfo;
+    mapping(address => mapping(address => uint256)) private tokenBalance;
 
     // now only support one ERC20 token
     constructor(address _erc20TokenAddress) public{
